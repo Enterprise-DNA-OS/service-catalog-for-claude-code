@@ -1,43 +1,59 @@
-# Service Catalog for Claude Code: operating instructions
+# Service Catalog for Claude Code
 
-This file is the brain. Claude Code reads it at the start of every session. It says who this is for, how work gets done, and the one right way to do each recurring job.
+Read the database before answering. This is an internal service ownership desk for one organisation and trusted operators. It records ownership, direct dependencies, assessments, exceptions and remediation. It does not execute deployments, run security scanners or contact production systems.
 
-## Who this is for
+## Operating rules
 
-- **Business:** [YOUR BUSINESS]
-- **Operator:** [YOUR NAME], [your role]
-- **What matters most:** [the one or two outcomes you care about]
+- Start with `node scripts/catalog.mjs attention` and the named service's `show` and `history` commands.
+- The CLI is the one write path. Supply `--actor` for every mutation. That label records who is reported to have acted, not an authenticated identity.
+- Ask when a name is ambiguous. Never infer an approver, evidence, owner or assessment result.
+- Keep exceptions distinct from passes. Stale evidence stays stale. No inferred security assurance.
+- Record an exception only after the operator gives the approver, reason and expiry. Do not approve on someone else's behalf.
+- Never send messages, execute remote actions or delete records. Drafts stay in `drafts/`.
+- Only seed disposable demo databases. Business databases start with migrate alone.
+- Every recurring task uses `.claude/commands/`. All coding agents use this library.
 
-Fill this in once. A worker with context knows. A worker without it guesses.
+## Routing
 
-## How to work
-
-1. **Take a brief, not a script.** The operator describes the outcome. You run the right command and present the answer.
-2. **Read before you write.** Before drafting anything about a record, read its full history first.
-3. **Plain language.** Short sentences. No filler. Numbers in tables.
-4. **Silent success, loud problems.** No play-by-play. Say what broke and what you did about it.
-5. **Stop at the line.** Anything that sends, deletes, or faces a customer waits for a yes in this session.
-
-## Routing table: one right way for each recurring job
-
-| When the operator asks for... | Use this |
+| Job | Command |
 |---|---|
-| <!-- TODO(author): one row per slash command --> | `/...` |
+| help | `/help` |
+| teams | `/teams` |
+| services | `/services` |
+| show | `/show` |
+| owner review | `/owner-review` |
+| scorecards | `/scorecards` |
+| dependency risk | `/dependency-risk` |
+| exceptions due | `/exceptions-due` |
+| remediation | `/remediation` |
+| attention | `/attention` |
+| compliance | `/compliance` |
+| insights | `/insights` |
+| history | `/history` |
+| add team | `/add-team` |
+| add | `/add` |
+| Correct service details | `/update` |
+| assign | `/assign` |
+| review | `/review` |
+| lifecycle | `/lifecycle` |
+| link | `/link` |
+| add standard | `/add-standard` |
+| attest | `/attest` |
+| except | `/except` |
+| close exception | `/close-exception` |
+| add task | `/add-task` |
+| complete task | `/complete-task` |
+| log | `/log` |
+| import | `/import` |
+| export | `/export` |
+| weekly review | `/weekly-review` |
+| draft handover | `/draft-handover` |
 
-If an ask fits nothing here, run the CLI directly (`npm run <cli> -- --help`) and then propose a new command for it.
+| Change a field or rule | `/customise` |
+| Add a read-only report | `/new-view` |
 
-## Hard rules
+## Files
 
-- Never send email or messages from here. Draft to `drafts/`, a person sends.
-- Never delete records without an explicit yes in this session. Prefer marking closed or archived.
-- Never invent a record. If a name is ambiguous, list the candidates and ask.
-- The database is the source of truth. If the answer is not in it, say so.
+`supabase/migrations/` contains the Postgres/PGlite schema. `scripts/catalog.mjs` owns the CLI. `views.json` and `documents.json` define branded read-only output. `brand.json` holds the business name, colours and logo. `docs/replace-port.md` specifies import mappings and limits. `docs/compliance.md` separates local policy choices from source practices.
 
-## Where things live
-
-- `scripts/` the CLI. `scripts/lib/db.mjs` picks `DATABASE_URL` (Postgres, Supabase) or the embedded database in `.data/`.
-- `supabase/migrations/` the schema, plain SQL. `npm run migrate` applies it.
-- `.claude/commands/` the slash commands. Add one every time the same ask comes twice.
-- `docs/` the thesis and the guide for moving off Port.
-
-Built by Enterprise DNA. Installed and run for you as part of Omni: https://enterprisedna.co/omni/instead-of/port
+Use main. Every authored commit ends with `Agent: omni-rebuild-strategist`.

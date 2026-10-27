@@ -1,11 +1,52 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
-    "file": "name",
+    "name": "service-handover",
+    "title": "Service ownership handover",
+    "for_each": "select id,code from services where lifecycle<>'retired' order by code",
+    "file": "code",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Service",
+        "layout": "record",
+        "sql": "select code,name,team,lifecycle,tier,runbook,repository from catalog where id=$1"
+      },
+      {
+        "title": "Standards evidence",
+        "sql": "select standard,result,checked_on,evidence,has_exception from scorecard where service_id=$1 order by standard"
+      },
+      {
+        "title": "Open remediation",
+        "sql": "select code,title,owner,due_on from tasks where service_id=$1 and status='open' order by due_on"
+      }
+    ]
+  },
+  {
+    "name": "exception-record",
+    "title": "Standards exception record",
+    "for_each": "select id,code from exceptions order by code",
+    "file": "code",
+    "sections": [
+      {
+        "title": "Decision record",
+        "layout": "record",
+        "sql": "select e.code,s.code as service,st.code as standard,e.reason,e.approver,e.expires_on,e.closed from exceptions e join services s on s.id=e.service_id join standards st on st.id=e.standard_id where e.id=$1"
+      }
+    ]
+  },
+  {
+    "name": "team-review",
+    "title": "Team service review",
+    "for_each": "select id,code from teams order by code",
+    "file": "code",
+    "sections": [
+      {
+        "title": "Owned services",
+        "sql": "select code,name,lifecycle,tier,reviewed_on from services where team_id=$1 order by code"
+      },
+      {
+        "title": "Overdue tasks",
+        "sql": "select t.code,s.code as service,t.title,t.owner,t.due_on from tasks t join services s on s.id=t.service_id where s.team_id=$1 and t.status='open' and t.due_on<current_date order by t.due_on"
+      }
     ]
   }
 ]

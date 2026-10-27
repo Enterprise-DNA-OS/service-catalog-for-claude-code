@@ -1,115 +1,142 @@
-<h1 align="center">Service Catalog for Claude Code</h1>
+# Service Catalog for Claude Code
 
-<p align="center">
-  <strong>The open-source software service catalog that is just a database and Claude Code.</strong>
-</p>
+Own the record of who runs each software service, what it depends on, which standards have evidence and what still needs attention.
 
-<p align="center">
-  Created by <a href="https://www.enterprisedna.co"><strong>Enterprise DNA</strong></a>. Free and open source. Works with Claude Code, Codex, OpenCode or Cursor.
-</p>
+| Do it yourself | We customise it | We run it for you |
+|---|---|---|
+| Free MIT code. Install and operate it yourself. | Your ownership rules, standards, reports and Port data mapping. | Installed, connected and operated through Omni by Enterprise DNA. |
+| [Quick start](#quick-start) | One setup fee, then a retainer. [Get your version built](https://enterprisedna.co/omni/book?offer=replace-software&utm_campaign=port) | One setup fee, then a retainer. [Talk to Sam](https://enterprisedna.co/omni/book?offer=replace-software&utm_campaign=port) |
 
-<!-- three-doors -->
-<table align="center">
-  <tr>
-    <td align="center"><strong>Do it yourself</strong><br/>Clone it, run it, own it. Free, MIT.<br/><a href="#quick-start">Quick start</a></td>
-    <td align="center"><strong>We customise it</strong><br/>Your fields, your rules, your Port data brought across.<br/><a href="https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=port">Book a call</a></td>
-    <td align="center"><strong>We run it for you</strong><br/>Installed, connected and operated inside Omni. Setup fee, then a retainer.<br/><a href="https://enterprisedna.co/omni/instead-of/port?utm_source=github&utm_medium=readme&utm_campaign=port">How it works</a></td>
-  </tr>
-</table>
+## The annual bill
 
-<p align="center">
-  <a href="#what-is-this">What is this</a> &bull;
-  <a href="#why-no-front-end">Why no front end</a> &bull;
-  <a href="#quick-start">Quick start</a> &bull;
-  <a href="#the-commands">Commands</a> &bull;
-  <a href="#instead-of-port">Instead of Port</a> &bull;
-  <a href="#want-it-installed-and-run-for-you">Installed for you</a> &bull;
-  <a href="#license">License</a>
-</p>
+[Port's pricing page](https://www.port.io/pricing), checked 27 October 2026, lists Basic from $30 per seat per month billed annually, in a 50-seat package. That is $18,000 a year at the displayed starting rate. This is a calculation from published pricing, not a customer invoice. The page shows dollar signs without a currency label. Confirm the billing currency and your contract. Port also has a free tier.
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Node-20+-339933?style=flat-square" alt="Node 20+" />
-  <img src="https://img.shields.io/badge/PostgreSQL-any-336791?style=flat-square" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/PGlite-embedded-3ecf8e?style=flat-square" alt="PGlite" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License" />
-</p>
-
----
-
-## What is this
-
-Service Catalog for Claude Code does the job you pay Port for, as a Postgres database and a set of agent commands. There is no web front end. You open the folder in [Claude Code](https://claude.com/claude-code) (or Codex, OpenCode, Cursor: see `AGENTS.md`) and ask for what you want in plain language. It runs the right query, and it can answer questions the Port dashboard cannot.
-
-<!-- TODO(author): the annual bill. One sentence: what a 10 to 50 person business typically pays Port per year, all in, with a source. -->
-
-Want the same thing with a web front end, or built on a different stack? That is a customisation, and it is exactly what Enterprise DNA does: [book a call](https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=port).
-
-<!-- TODO(author): two or three sentences on what this specific product covers and who it is for. -->
-
-## Why no front end
-
-- The front end was only ever there because the database was hard to talk to. That is no longer true.
-- Your data sits in plain Postgres tables you own. Any tool can read them. No export, no lock-in.
-- No seats, no tiers, no add-ons. Read [docs/why-no-front-end.md](docs/why-no-front-end.md) for the honest trade-offs too.
+This independent project supplies the internal catalog and review work. Port is a broader hosted platform. The base does not include its integrations, developer self-service execution, sign-in, public portal, provisioning or live resource discovery. It never connects to a production service. Enterprise DNA scopes those connections and any screens around the customer's own process. Port and its marks belong to their owners. No affiliation is implied.
 
 ## Quick start
 
-Sixty seconds, no database install (an embedded Postgres runs inside Node):
+Node 20 or later. Run locally with embedded PGlite, or use a trusted shared Postgres database.
 
 ```bash
 git clone https://github.com/Enterprise-DNA-OS/service-catalog-for-claude-code.git
 cd service-catalog-for-claude-code
 npm install
+npm test
 npm run demo
+npm run view
+npm run docs
+node scripts/catalog.mjs help
 ```
 
-Then open the folder in Claude Code and type a slash command. <!-- TODO(author): name the first command to try. -->
+Use Claude Code, Codex, OpenCode or Cursor. All read the same command library through CLAUDE.md and AGENTS.md. Demo records are fictional. Dates are relative to the first seed, including overdue reviews, an expired exception and stale evidence. The seed is idempotent. Never seed business data. Use a fresh DATA_DIR with migrate alone to begin your own register.
 
-### Use it with your own Postgres or Supabase
+## Five weekly rituals
 
-Copy `.env.example` to `.env`, set `DATABASE_URL`, then `npm run migrate`. Same commands, shared data, no per-seat fee.
+1. `/owner-review`: confirm the team responsible for every active service.
+2. `/scorecards`: read missing, stale, failed and passed evidence separately.
+3. `/dependency-risk`: review direct dependencies with gaps or a retired lifecycle.
+4. `/exceptions-due`: review expired exceptions and those due within 30 days.
+5. `/remediation`: assign and complete the work behind the gaps.
 
-## The commands
+`/attention` combines outstanding work. `/weekly-review` writes a Monday draft from ownership, dependencies and attention. `/draft-handover` writes a service's ownership, standards and open work. Nothing sends.
 
-<!-- TODO(author): a table of the slash commands in .claude/commands and what each one does. -->
+## Commands
 
-| Command | What it does |
-|---|---|
-| `/...` | ... |
+Flags use `--key=value`. Every command accepts `--json`. Codes, names and UUID prefixes resolve without case sensitivity. Ambiguous names list candidates and exit 1. Mutation labels are attribution, not authenticated identity.
 
-## Instead of Port
-
-<!-- TODO(author): how to bring data across from Port; link docs/replace-port.md -->
-
-## Architecture
-
+```text
+help
+teams
+services
+show <service>
+owner-review
+scorecards
+dependency-risk
+exceptions-due
+remediation
+attention
+compliance
+insights
+history <service>
+add-team --code=<code> --name="<name>" --contact="<contact>" --actor="<operator>"
+add --code=<code> --name="<name>" --team=<team> --tier=standard --runbook="<reference>" --actor="<operator>"
+update <service> --runbook="<reference>" --repository="<reference>" --actor="<operator>"
+assign <service> --team=<team> --actor="<operator>"
+review <service> --note="<review evidence>" --actor="<operator>"
+lifecycle <service> --state=<proposed|production|deprecated|retired> --note="<reason>" --actor="<operator>"
+link <service> --to=<dependency> --note="<dependency reason>" --actor="<operator>"
+add-standard --code=<code> --name="<name>" --source=<https-policy-reference> --days=90 --actor="<operator>"
+attest <service> --standard=<standard> --result=<pass|fail> --evidence="<reference>" --date=<YYYY-MM-DD> --actor="<operator>"
+except <service> --standard=<standard> --code=<code> --reason="<reason>" --approver="<recorded approver>" --expires=<YYYY-MM-DD> --actor="<operator>"
+close-exception <exception> --note="<closure reason>" --actor="<operator>"
+add-task <service> --code=<code> --title="<work>" --owner="<owner>" --due=<YYYY-MM-DD> --actor="<operator>"
+complete-task <task> --note="<resolution evidence>" --actor="<operator>"
+log <service> --note="<note>" --actor="<operator>"
+import port <catalog.csv> --source=<stable-source-label> --dry-run --actor="<operator>"
+export --out=catalog-export.json
+weekly-review
+draft-handover <service>
 ```
-service-catalog-for-claude-code/
-  CLAUDE.md                 how the operator wants this run (routing table + house rules)
-  AGENTS.md                 the same, for Codex / OpenCode / Cursor / Gemini CLI
-  .claude/commands/         the slash commands
-  scripts/                  the CLI the commands drive
-  scripts/lib/db.mjs        one adapter: DATABASE_URL (pg) or embedded PGlite
-  supabase/migrations/      plain SQL schema
-  supabase/seed.sql         demo data
-  docs/                     the thesis and the migration guide
+
+Service tiers are critical, standard, low or unknown. New services default to proposed and unknown. Promotion to production requires an owner and a runbook reference. Retirement refuses while an active service records a dependency. Dependencies are direct links, not inferred transitive impact or live topology.
+
+Assessments store pass or fail with an evidence reference, date and actor. The current result becomes stale after the standard's configured freshness period. A missing assessment never counts as pass. A future assessment date is rejected. An unexpired exception records accepted risk separately and leaves the underlying result intact. Closing it requires a reason. A completed task requires resolution evidence. All successful mutations and import rows append an audit event in the same transaction.
+
+Ownership review intervals of 90 days, standard freshness of 90 days and the 30-day exception lookahead are local defaults, not deadlines set by NIST. Change them through `/customise` and a tested migration.
+
+## Bring Port records across
+
+```bash
+node scripts/catalog.mjs import port examples/port-services.csv --source=demo-port --dry-run --actor="Demo operator"
+node scripts/catalog.mjs import port examples/port-services.csv --source=demo-port --actor="Demo operator"
+node scripts/catalog.mjs export --out=catalog-export.json
+node scripts/catalog.mjs export --format=csv --out=catalog-register.csv
 ```
 
-## Built for coding agents
+Port's catalog CSV export includes visible columns and the entities permitted by current filters. The included example is synthetic, showing one configured catalog layout. [The switching guide](docs/replace-port.md) explains column mapping and existing team matching. Custom fields stay in the original source row. Scorecard rules, dependencies, attachments, integrations and permissions need separate mapping. Imported owner reviews are never assumed complete.
 
-The database, CLI and command recipes work with Claude Code, Codex, OpenCode or Cursor. Ask your coding agent for a new command and have it implement and test the change against the same records.
+The full batch validates and writes transactionally. A bad row rolls back all rows and audit events. Same-source duplicates are skipped when unchanged. Changed records are rejected for explicit reconciliation. Preview performs the same writes inside a rolled-back transaction. Use one stable source label for the same Port catalog.
 
-## Contributing
+## Ten questions to ask
 
-Issues and pull requests are welcome. Keep the shape: plain SQL, a small CLI, a slash command per recurring job, no front end.
+`node scripts/catalog.mjs insights` answers all ten from the current records. These combine ownership, evidence and work in ways that suit this desk. Port supports custom reporting too; this is not a claim that Port cannot answer them with configuration.
 
-## Want it installed and run for you?
+1. Which critical services lack a responsible team?
+2. Which production services depend directly on deprecated or retired services?
+3. Which services have stale evidence despite a recorded pass?
+4. Which standards have never been assessed for each service?
+5. Which exceptions expired while their checks still failed or lacked evidence?
+6. Which teams own services with overdue remediation?
+7. Which services have an exception but still lack a runbook?
+8. Which production services have no dependency records?
+9. Which imported services still await an ownership review?
+10. Which services combine overdue ownership reviews with open remediation?
 
-Enterprise DNA installs Service Catalog for Claude Code for your business, migrates your Port data, connects it to the rest of your tools, and runs it for you as part of **Omni**, our managed Command Center. One setup fee, then a monthly retainer.
+## Documents and views
 
-- Book a call: [enterprisedna.co/omni/book](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=port)
-- Read more: [enterprisedna.co/omni/instead-of/port](https://enterprisedna.co/omni/instead-of/port?utm_source=github&utm_medium=readme&utm_campaign=port)
+`npm run docs` renders a service handover, exception record and team review as HTML. `npm run view` renders the week, standards and dependency review. Change your name, logo and colours in brand.json. These are read-only documents, with no forms or server. `/new-view` adds a report. [Why no front end](docs/why-no-front-end.md) explains the operating scope.
 
-## License
+`/compliance` checks evidence against selected NIST SSDF practices. It does not scan software, verify references, certify compliance or grant exceptions. [Compliance sources](docs/compliance.md) name each practice and the limits of the check.
 
-MIT. Copyright (c) 2026 Enterprise DNA.
+## Your first hour: ten things to ask for
+
+1. Put our business name and colours on the handover.
+2. Add our platform and product teams.
+3. Add our critical customer-facing services.
+4. Import a small Port catalog export and reconcile the count.
+5. Map our owner field to existing teams.
+6. Review the services with no responsible team.
+7. Record our real security assessment evidence.
+8. Add the dependencies we know about and their source.
+9. Record one approved exception with its expiry and follow-up task.
+10. Add a service domain field through `/customise` and a tested migration.
+
+## Operating boundaries
+
+One organisation per database, trusted internal operators only. No application authentication or tenant isolation layer. Row-level security is enabled without public policies. A shared deployment needs scoped database roles, secret storage, protected backups and tested restore procedures. Keep credentials outside this repository. Store evidence references, not confidential document bodies. Names and internal links in exports remain sensitive business data.
+
+JSON export includes every domain record and audit event. It is a portable record copy, not a tested restore mechanism. CSV exports protect against spreadsheet formulas. HTML escapes record content. Files use restrictive permissions where the operating system supports them. Audit events reject normal updates and deletes; a database owner can alter those protections.
+
+`npm test` uses disposable storage and exercises all 31 CLI commands, rollback, import preview, matching, evidence expiry, exception handling, retirement guards and rendering. A manual GitHub workflow checks Linux and Windows on Node 20/22 plus Postgres 17. See [verification](docs/verification.md) for actual run results.
+
+MIT. Built by Enterprise DNA.

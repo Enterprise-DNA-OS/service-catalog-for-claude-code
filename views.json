@@ -1,13 +1,38 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Service Catalog for Claude Code: what needs attention, rendered by npm run view",
+    "title": "Service ownership week",
+    "subtitle": "Fictional demo data when seeded. Evidence gaps need a responsible owner.",
     "sections": [
       {
+        "title": "Ownership review",
+        "sql": "select code,name,team,reviewed_on from catalog where lifecycle<>'retired' order by code"
+      },
+      {
         "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "sql": "select * from attention order by service,kind,issue"
+      }
+    ]
+  },
+  {
+    "name": "standards",
+    "title": "Standards evidence",
+    "sections": [
+      {
+        "title": "Assessments",
+        "note": "An exception records acceptance of a gap. It does not pass a check.",
+        "sql": "select service,standard,result,checked_on,has_exception from scorecard order by service,standard"
+      }
+    ]
+  },
+  {
+    "name": "dependencies",
+    "title": "Dependency review",
+    "sections": [
+      {
+        "title": "Recorded risks",
+        "note": "Direct dependencies recorded in this database, not a live topology scan.",
+        "sql": "select * from dependency_risk order by service,dependency"
       }
     ]
   }
