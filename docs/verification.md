@@ -8,4 +8,11 @@
 - `npm run view`: PASS, three branded views.
 - `npm run docs`: PASS, eight documents across service handovers, exception records and team reviews.
 
-Windows and Postgres results will be recorded after the manual CI workflow finishes. No credentials or production systems are used in these checks.
+- Local disposable PostgreSQL 18.4: PASS, the same 31-command smoke suite, with the server stopped after the check.
+- Desktop standards view and mobile service handover: rendered, screenshotted and inspected headlessly.
+- Brand lint on README and prose documents: zero errors and zero warnings.
+- Page quality gate in Command Centre: PASS, sourced prices and three actual captured demo runs.
+
+[GitHub workflow run](https://github.com/Enterprise-DNA-OS/service-catalog-for-claude-code/actions/runs/40438196214) was blocked before any steps ran. GitHub reports account payment failure or a spending limit. Windows Node 20/22 and hosted Postgres 17 therefore remain unverified, not failed code tests. The portable test runner and Windows matrix are committed. No billing settings were changed. Linux PGlite and local Postgres results above are actual completed runs.
+
+Only disposable test credentials were used. No production systems were contacted by the catalog tests.
