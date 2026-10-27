@@ -16,3 +16,5 @@
 [GitHub workflow run](https://github.com/Enterprise-DNA-OS/service-catalog-for-claude-code/actions/runs/40438196214) was blocked before any steps ran. GitHub reports account payment failure or a spending limit. Windows Node 20/22 and hosted Postgres 17 therefore remain unverified, not failed code tests. The portable test runner and Windows matrix are committed. No billing settings were changed. Linux PGlite and local Postgres results above are actual completed runs.
 
 Only disposable test credentials were used. No production systems were contacted by the catalog tests.
+
+Landing Pages route rendered in an isolated local preview using the unchanged source components: HTTP 200, noindex,nofollow, all three offers and the attributed booking link verified. Desktop and mobile screenshots were inspected. The preview servers and browsers were stopped. Landing Pages commit 3e9310f0 was pushed. The public page URL returned 404 at the final check, so host deployment is not claimed. Publication remains with the runner.
